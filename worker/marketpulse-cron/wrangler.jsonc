@@ -1,0 +1,10 @@
+{
+	"name": "marketpulse-cron",
+	"main": "src/index.ts",
+	"compatibility_date": "2024-01-01",
+	"triggers": {
+		"crons": [
+			"*/15 * * * *"
+		]
+	}
+}
