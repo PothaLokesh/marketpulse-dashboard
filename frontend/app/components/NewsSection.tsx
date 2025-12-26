@@ -25,7 +25,7 @@ export default function NewsSection({ symbol }: Props) {
         setLoading(true);
 
         fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/news?symbol=${symbol}&limit=5`
+            `${process.env.NEXT_PUBLIC_API_URL}/api/news?symbol=${symbol}&limit=5`
         )
             .then((res) => res.json())
             .then((data) => setNews(data))

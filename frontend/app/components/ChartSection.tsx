@@ -37,7 +37,7 @@ export default function ChartSection({ symbol }: Props) {
             wickDownColor: "#ef4444",
         });
 
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/stock-data?symbol=${symbol}`)
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stock-data?symbol=${symbol}`)
             .then((res) => res.json())
             .then((data) => {
                 const formatted: CandlestickData[] = data.map((item: any) => ({
