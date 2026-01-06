@@ -45,9 +45,25 @@ router.post("/news", async (req, res) => {
         }
 
         for (const article of articles) {
+            // Marketaux uses `uuid` but our model expects `id`
+            // Also need to extract symbols from `entities` array if present
+            const symbolList = article.entities
+                ? article.entities.map((e: any) => e.symbol)
+                : [];
+
+            const newsItem = {
+                id: article.uuid,
+                title: article.title,
+                description: article.description,
+                url: article.url,
+                source: article.source,
+                published_at: article.published_at,
+                symbols: symbolList,
+            };
+
             await News.updateOne(
-                { id: article.id },
-                { $setOnInsert: article },
+                { id: newsItem.id },
+                { $setOnInsert: newsItem },
                 { upsert: true }
             );
         }
