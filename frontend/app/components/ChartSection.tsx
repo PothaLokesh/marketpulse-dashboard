@@ -38,10 +38,18 @@ export default function ChartSection({ symbol }: Props) {
         });
 
         fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/stock-data?symbol=${symbol}`)
-            .then((res) => res.json())
+            .then((res) => {
+                if (!res.ok) {
+                    console.warn(`Failed to fetch stock data: ${res.status} ${res.statusText}`);
+                    return null;
+                }
+                return res.json();
+            })
             .then((data) => {
+                if (!Array.isArray(data)) return;
+
                 const formatted: CandlestickData[] = data.map((item: any) => ({
-                    time: Math.floor(new Date(item.date).getTime() / 1000),
+                    time: Math.floor(new Date(item.date).getTime() / 1000) as any, // Cast to any to satisfy Time type
                     open: item.open,
                     high: item.high,
                     low: item.low,
@@ -49,7 +57,8 @@ export default function ChartSection({ symbol }: Props) {
                 }));
 
                 candleSeries.setData(formatted);
-            });
+            })
+            .catch((err) => console.error("Chart data error:", err));
 
         return () => {
             chart.remove();

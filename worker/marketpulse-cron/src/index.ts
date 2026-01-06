@@ -7,7 +7,7 @@ export default {
 		for (const symbol of symbols) {
 			try {
 				const res = await fetch(
-					`https://api.marketaux.com/v1/news?symbols=${symbol}&api_token=${env.MARKETAUX_API_KEY}`
+					`https://api.marketaux.com/v1/news/all?symbols=${symbol}&api_token=${env.MARKETAUX_API_KEY}`
 				);
 
 				if (!res.ok) continue;

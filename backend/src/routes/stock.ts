@@ -13,44 +13,30 @@ router.get("/stock-data", async (req, res) => {
             return res.status(400).json({ error: "Symbol is required" });
         }
 
-        const result = await yahooFinance.chart(symbol, {
-            period1: new Date("2024-01-01"),
+        const result = await yahooFinance.historical(symbol, {
+            period1: "2024-01-01",
             period2: new Date(),
             interval: "1d",
-            return: "object",
         });
 
-        const chart = result;
-
-        if (!chart || !chart.timestamp || !chart.indicators?.quote?.[0]) {
-            return res.status(500).json({ error: "Invalid chart data returned" });
-        }
-
-        const candles = chart.indicators.quote[0];
-        const timestamps: number[] = chart.timestamp;
-
-        const formatted = timestamps.map((time: number, i: number) => {
-            const open = candles.open[i];
-            const close = candles.close[i];
-
+        const formatted = result.map((item) => {
             let signal: "LONG" | "SHORT" | "NEUTRAL" = "NEUTRAL";
 
-            // ✅ FULL type narrowing (null + undefined safe)
-            if (typeof open === "number" && typeof close === "number") {
-                signal = getSignal(open, close);
+            // Signal calculation
+            if (typeof item.open === "number" && typeof item.close === "number") {
+                signal = getSignal(item.open, item.close);
             }
 
             return {
-                date: new Date(time * 1000),
-                open,
-                high: candles.high[i],
-                low: candles.low[i],
-                close,
-                volume: candles.volume[i],
+                date: item.date, // already a Date object
+                open: item.open,
+                high: item.high,
+                low: item.low,
+                close: item.close,
+                volume: item.volume,
                 signal,
             };
         });
-
 
         res.json(formatted);
     } catch (error) {

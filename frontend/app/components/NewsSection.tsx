@@ -7,6 +7,7 @@ type NewsItem = {
     title: string;
     description?: string;
     url: string;
+    image_url?: string;
     source: string;
     published_at: string;
 };
@@ -54,18 +55,27 @@ export default function NewsSection({ symbol }: Props) {
                         href={item.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="block p-4 bg-slate-800 rounded hover:bg-slate-700 transition"
+                        className="flex gap-4 p-4 bg-slate-800 rounded hover:bg-slate-700 transition"
                     >
-                        <h3 className="font-medium">{item.title}</h3>
-                        <p className="text-sm text-slate-400 mt-1">
-                            {item.source} •{" "}
-                            {new Date(item.published_at).toLocaleString()}
-                        </p>
-                        {item.description && (
-                            <p className="text-sm text-slate-300 mt-2">
-                                {item.description}
-                            </p>
+                        {item.image_url && (
+                            <img
+                                src={item.image_url}
+                                alt={item.title}
+                                className="w-24 h-24 object-cover rounded"
+                            />
                         )}
+                        <div className="flex-1">
+                            <h3 className="font-medium">{item.title}</h3>
+                            <p className="text-sm text-slate-400 mt-1">
+                                {item.source} •{" "}
+                                {new Date(item.published_at).toLocaleString()}
+                            </p>
+                            {item.description && (
+                                <p className="text-sm text-slate-300 mt-2 line-clamp-2">
+                                    {item.description}
+                                </p>
+                            )}
+                        </div>
                     </a>
                 ))}
             </div>

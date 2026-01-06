@@ -23,3 +23,11 @@ app.use("/api", newsRoutes);
 // ❌ REMOVE app.listen()
 // ✅ EXPORT app for Vercel
 export default app;
+
+// 🚀 Start server locally if not in production/vercel
+if (require.main === module) {
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
+}

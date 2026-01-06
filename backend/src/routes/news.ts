@@ -56,6 +56,7 @@ router.post("/news", async (req, res) => {
                 title: article.title,
                 description: article.description,
                 url: article.url,
+                image_url: article.image_url,
                 source: article.source,
                 published_at: article.published_at,
                 symbols: symbolList,
