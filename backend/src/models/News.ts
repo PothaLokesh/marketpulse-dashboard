@@ -14,5 +14,8 @@ const NewsSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
+// 🚀 Index for fast retrieval by symbol + sorting
+NewsSchema.index({ symbols: 1, published_at: -1 });
+
 export default mongoose.models.News ||
     mongoose.model("News", NewsSchema);

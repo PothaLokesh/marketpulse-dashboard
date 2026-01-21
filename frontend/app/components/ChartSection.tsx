@@ -49,7 +49,7 @@ export default function ChartSection({ symbol }: Props) {
                 if (!Array.isArray(data)) return;
 
                 const formatted: CandlestickData[] = data.map((item: any) => ({
-                    time: Math.floor(new Date(item.date).getTime() / 1000) as any, // Cast to any to satisfy Time type
+                    time: item.time as any, // Backend now returns Unix timestamp
                     open: item.open,
                     high: item.high,
                     low: item.low,
